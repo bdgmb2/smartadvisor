@@ -1,0 +1,29 @@
+<article *ngIf="loading">
+    <p>Loading, Please Wait...</p>
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</article>
+<article [class]="loadingClass">
+    <div class="plan-content" cdkDropListGroup>
+        <section class="semester" *ngFor="let semester of semesters; let counter = index">
+            <h2>Semester {{ counter + 1 }}</h2>
+            <div cdkDropList [cdkDropListData]="semester" class="course-list">
+                <div *ngFor="let class of semester">
+                    <mat-card *ngIf="class.type === 'Course'" [class]="resolveCSS(class)" cdkDrag (click)="showCourseDetails(class)">
+                        <mat-card-title><p class="nomargin"><b>{{ class.id }}</b></p></mat-card-title>
+                        <mat-card-subtitle><p class="nomargin">{{ class.name }}</p></mat-card-subtitle>
+                    </mat-card>
+                    <mat-card *ngIf="class.type === 'Elective'" [class]="resolveCSS(class)" cdkDrag (click)="showElectiveDetails(class)">
+                        <div class="nomargin" *ngIf="class.pickedCourse === undefined">
+                            <mat-card-title class="notop"><p class="nomargin"><b>{{ class.name }} Elective</b></p></mat-card-title>
+                            <mat-card-subtitle class="nomargin"><p class="nomargin">Pick from {{ class.possibleCourses.length }} course{{ (class.possibleCourses.length !== 1 ? 's' : '') }}</p></mat-card-subtitle>
+                        </div>
+                        <div class="nomargin" *ngIf="class.pickedCourse !== undefined">
+                            <mat-card-title><p class="notop"><b>{{ class.pickedCourse.id }}</b></p></mat-card-title>
+                            <mat-card-subtitle><p class="nomargin">{{ class.pickedCourse.name }}</p></mat-card-subtitle>
+                        </div>
+                    </mat-card>
+                </div>
+            </div>
+        </section>
+    </div>
+</article>

@@ -1,0 +1,47 @@
+version: '3.3'
+services:
+  frontend:
+    image: git-docker.mst.edu/smartass/advisingsa-frontend:prod-latest
+    volumes:
+      - frontend:/frontend
+  backend:
+    image: git-docker.mst.edu/smartass/advisingsa-backend:prod-latest
+    ports:
+      - "5000:5000"
+    hostname: backend
+    depends_on:
+      - database
+    volumes:
+      - ./backend-configs:/configs:ro
+  database:
+    image: "neo4j:latest"
+    hostname: database
+    volumes:
+      - /srv/docker/backend/data:/data
+  webserver:
+    image: "linuxserver/letsencrypt"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+      - SUBDOMAINS=
+      - VALIDATION=http
+      - URL=smartassistant.ga
+      - EMAIL=bdgmb2@mst.edu
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - /letsencrypt-keys:/config/keys
+      - ./nginx:/config/nginx
+      - ./letsencrypt_certs:/etc/letsencrypt/live
+      - ./fail2ban:/config/fail2ban
+      - frontend:/frontend
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - frontend
+      - backend
+    command: "/bin/sh -c 'mkdir -p /run/nginx && while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+volumes:
+  frontend:

@@ -1,0 +1,11 @@
+<footer class="footer" *ngIf="!isDevMode()">
+    <div class="loading" *ngIf="loading">
+        <h2>Please Wait, Loading Debug Panel...</h2>
+        <mat-spinner mode="indeterminate" diameter="40" *ngIf="loading"></mat-spinner>
+    </div>
+    <section class="content" *ngIf="!loading">
+        <h3>Debugging Information:</h3>
+        <p>Backend Status: {{ backendStatus }}</p>
+        <p>App Environment: {{ environmentStatus }}</p>
+    </section>
+</footer>

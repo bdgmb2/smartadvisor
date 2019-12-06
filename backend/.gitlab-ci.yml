@@ -1,0 +1,67 @@
+image: tmaier/docker-compose:latest
+
+before_script:
+  - whoami
+  - pwd
+  
+stages:
+  - build
+  - deploy
+  - test
+
+ci:
+  image: mcr.microsoft.com/dotnet/core/sdk:2.2
+  stage: test
+  script:
+    - dotnet build -c Release
+    - dotnet test -c Release
+  only:
+    - merge_requests
+  tags:
+    - ci
+
+build-dev:
+  stage: build
+  only:
+    - dev
+  tags:
+    - ci
+  script:
+    - mkdir -p /backend/configs
+    - echo "$APP_SETTINGS_DEV" > /backend/configs/appsettings.json
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -t $CI_REGISTRY_IMAGE:dev-latest -f Dockerfile.beta .
+    - docker push $CI_REGISTRY_IMAGE:dev-latest
+
+build-prod:
+  stage: build
+  only:
+    - master
+  tags:
+    - ci
+  script:
+    - mkdir -p /backend/configs
+    - echo "$APP_SETTINGS_PROD" > /backend/configs/appsettings.json
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -t $CI_REGISTRY_IMAGE:prod-latest -f Dockerfile.production .
+    - docker push $CI_REGISTRY_IMAGE:prod-latest
+    
+deploy-dev:
+  stage: deploy
+  only:
+    - dev
+  tags:
+    - dev
+  script:
+    - curl -X POST -F token=8e7ee967b54f4a3dfc83a036472920 -F ref=dev https://git.mst.edu/api/v4/projects/4607/trigger/pipeline
+  when: manual
+
+deploy-prod:
+  stage: deploy
+  only:
+    - master
+  tags:
+    - prod
+  script:
+    - curl -X POST -F token=8e7ee967b54f4a3dfc83a036472920 -F ref=master https://git.mst.edu/api/v4/projects/4607/trigger/pipeline
+  when: manual

@@ -1,0 +1,79 @@
+@import "~src/vars.scss";
+
+$shadow: 14px 14px 8px rgba(0, 0, 0, 0.4);
+
+.background {
+    background: url('~src/assets/sabackground.svg') no-repeat top left;
+    background-size: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+article {
+    max-width: 1200px;
+    width: 100%;
+    padding-top: 80px;
+    header {
+        margin: 0 auto;
+    }
+}
+
+.header-box {
+    max-width: 1000px;
+    padding: 10px 20px;
+    background-color: map-get($md-primary, 400);
+    box-shadow: $shadow;
+    h1, h2, h3, p { color: white; margin: 0; }
+    h1 { font-size: 80px; }
+    img { max-width: 500px; margin-top: 20px; }
+    > :last-child { padding-bottom: 20px; }
+}
+
+.header-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-box {
+    margin-top: 150px;
+    padding: 30px 40px;
+    background-color: white;
+    box-shadow: $shadow;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    h2 {
+        font-size: 40px;
+    }
+    .login {
+        font-size: 24px;
+        padding: 10px 30px;
+        margin: 10px 0 20px 0;
+        border: 1px solid #005F83;
+    }
+    .login:hover {
+        transition: 1s;
+        color: #3498db;
+        background-color: white;
+        border: 1px solid #3498db;
+    }
+    .term_policy {
+        color: #3498db;
+    }
+    .term_policy:hover {
+        transition: 0.8s;
+        color: green;
+    }
+    .bottom {
+        margin-top: 60px;
+    }
+
+    mat-chip-list {
+        margin-top: 25px;
+    }
+}

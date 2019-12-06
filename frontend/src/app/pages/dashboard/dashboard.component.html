@@ -1,0 +1,51 @@
+<div class="wrapper">
+	<header class="navbar">
+		<mat-toolbar color="primary">
+			<section class="left">
+				<img src="assets/stlogo.svg" alt="Missouri S&T S.A. Logo"> 
+				<h2><b>SmartAdvisor</b></h2>
+			</section>
+			<section class="right">
+				<h2>Hello, {{(user ? user.firstName : 'Loading User')}}!</h2>
+				<img [src]="(user ? user.profileUrl : null)" id="profile" [matMenuTriggerFor]="profileMenu" class="profile-picture" alt="Google Profile Photo">
+				<mat-menu #profileMenu="matMenu" xPosition="before">
+						<button mat-menu-item (click)="logout()">Logout</button>
+				</mat-menu>
+			</section>
+		</mat-toolbar>
+	</header>
+	<main>
+		<section class="buttons">
+			<button mat-raised-button [disabled]="loading" (click)="openCompletedCourses()">Show Completed Courses</button>
+			<button mat-raised-button [disabled]="loading" color="accent" (click)="createNewDegreeDialog()">Create New Degree Plan</button>
+		</section>
+		<section *ngIf="loading" class="loading-bar">
+			<p>Loading, Please Wait...</p>
+			<mat-progress-bar mode="indeterminate"></mat-progress-bar>
+		</section>
+		<section *ngIf="!loading" class="plans">
+			<div *ngFor="let plan of plans">
+				<mat-expansion-panel class="plan-panel">
+					<mat-expansion-panel-header>
+						<mat-panel-title>
+							<h2 *ngIf="plan.getMajorNames()">{{ plan.getMajorNames() }}</h2>
+							<h3 *ngIf="plan.getMinorNames()">{{ plan.getMinorNames() }}</h3>
+						</mat-panel-title>
+						<mat-panel-description class="flex-col">
+							<p class="nomargin">Catalog Year: {{ plan.catalogYear }}</p>
+							<p class="nomargin">Expected Graduation Date: <b>{{ (plan.id > 1 ? 'Dec 2020' : 'May 2023') }}</b></p>
+						</mat-panel-description>
+						<button mat-raised-button class="delete" color="warn" (click)="deleteDegreePlan($event)">Delete</button>
+					</mat-expansion-panel-header>
+					<ng-template matExpansionPanelContent>
+						<app-degreeplan [degree]="plan"></app-degreeplan>
+					</ng-template>
+				</mat-expansion-panel>
+			</div>
+			<div class="none" *ngIf="plans.length === 0">
+				<h2>There are no degree plans!</h2>
+				<p>Create one by clicking "Create New Degree Plan"</p>
+			</div>
+		</section>
+	</main>
+</div>

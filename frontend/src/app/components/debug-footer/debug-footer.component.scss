@@ -1,0 +1,47 @@
+@import "~src/vars.scss";
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding: 15px 50px;
+    background-color: $gray;
+    display: flex;
+    align-items: flex-start;
+    :not(:last-child) {
+        margin-right: 25px;
+    }
+}
+
+.content {
+    h1, h2, h3, p {
+        color: white;
+    }
+    p {
+        margin: 0;
+    }
+    align-items: center;
+    justify-content: space-around;
+}
+
+.loading {
+    display: flex;
+    align-items: flex-start;
+    h1, h2, h3 {
+        color: white;
+        margin-top: 8px;
+    }
+    :not(:last-child) {
+        margin-right: 25px;
+    }
+}
+
+/*
+::ng-deep input.mat-input-element, ::ng-deep .mat-form-field.mat-focused .mat-form-field-label, ::ng-deep .mat-form-field-label {
+    color: white !important;
+}
+::ng-deep .mat-form-field-underline {
+    background-color: white !important;
+}
+*/

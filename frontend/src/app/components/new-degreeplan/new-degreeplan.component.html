@@ -1,0 +1,87 @@
+<h2 mat-dialog-title><b>Create New Degree Plan</b></h2>
+<mat-dialog-content>
+    <mat-vertical-stepper linear>
+        <mat-step label="Enter Catalog Year" [stepControl]="selectCatalogYear" [editable]="!loading">
+            <p>Select your catalog year. You can usually find this at the top of your DARS audit. Unless you've changed it, this is usually
+                the year of your first semester at Missouri S&T.</p>
+            <form [formGroup]="selectCatalogYear">
+                <mat-form-field>
+                    <mat-label>Catalog Year</mat-label>
+                    <mat-select formControlName="selCatalogYear" [(value)]="selectedCatalogYear">
+                        <mat-option *ngFor="let catalog of availableCatalogYears" [value]="catalog">{{ catalog }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </form>
+            <button mat-button matStepperNext (click)="afterSelectCatalogYear()">Next</button>
+        </mat-step>
+        <mat-step label="Select Majors" [stepControl]="selectMajors" [editable]="!loading">
+            <p>Select up to three majors:</p>
+            <form [formGroup]="selectMajors">
+                <mat-form-field>
+                    <mat-label>Majors</mat-label>
+                    <mat-select formControlName="selMajor" multiple [(value)]="selectedMajors">
+                        <mat-option *ngFor="let major of availableMajors" [value]="major">{{ major.department }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </form>
+            <button mat-button matStepperNext>Next</button>
+        </mat-step>
+        <mat-step label="Select Minors" [stepControl]="selectMinors" [editable]="!loading">
+            <p>Select Minors - this step is optional.</p>
+            <form [formGroup]="selectMinors">
+                <mat-form-field>
+                    <mat-label>Minors</mat-label>
+                    <mat-select formControlName="selMinor" multiple [(value)]="selectedMinors">
+                        <mat-option *ngFor="let minor of availableMinors" [value]="minor">{{ minor.department }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </form>
+            <button mat-button matStepperNext>Next</button>
+        </mat-step>
+        <mat-step label="Select Course Load">
+            <p>Select the credit hours per semester you would like to take. Or select the number of semesters you want before graduation.</p>
+            <mat-radio-group [(ngModel)]="loadType" class="radio">
+                <mat-radio-button value="hours">Hours Per Semester</mat-radio-button>
+                <mat-radio-button value="number">Number of Semesters</mat-radio-button>
+            </mat-radio-group>
+            <div class="slider" *ngIf="loadType === 'hours'">
+                <mat-label>Hours Per Semester:</mat-label>
+                <mat-slider thumbLabel tickInterval="1" min="12" max="22" step="1" value="15" (change)="sliderChanged($event)"></mat-slider>
+            </div>
+            <mat-chip-list *ngIf="hourWarning">
+                <mat-chip color="warn" selected>Warning: More than 19 credit hours will require approval from your academic department!</mat-chip>
+            </mat-chip-list>
+            <div *ngIf="loadType === 'number'">
+                <mat-label>Total Number of Semesters:</mat-label>
+                <mat-slider thumbLabel tickInterval="1" min="6" max="12" step="1" value="8" (change)="sliderChanged($event)"></mat-slider>
+            </div>
+            <mat-chip-list *ngIf="semesterWarning">
+                <mat-chip color="warn" selected>Warning: Taking less than 8 semesters may result in a course load that is above 18 credit hours - this requires approval from your academic department!</mat-chip>
+            </mat-chip-list>
+            <button mat-button matStepperNext>Next</button>
+        </mat-step>
+        <mat-step label="Remedial Math">
+            <p>Do you require remedial mathematics before entering Calc I? If so, select the <b>Lowest</b> level of math you need to take before continuing. Otherwise, click "Finish".</p>
+            <form>
+                <mat-form-field>
+                    <mat-label>Lowest Remedial Math Required</mat-label>
+                    <mat-select [(value)]="remedialMath">
+                        <mat-option value="1103">1103 - Intermediate Algebra</mat-option>
+                        <mat-option value="1120">1120 - College Algebra</mat-option>
+                        <mat-option value="1160">1160 - Trigonometry</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </form>
+            <mat-chip-list *ngIf="showError">
+                <mat-chip><p>Sorry, an error occurred. Please try again.</p></mat-chip>
+            </mat-chip-list>
+            <div>
+                <button mat-flat-button color="accent" [disabled]="loading" matStepperNext (click)="finish()" *ngIf="loadType !== undefined">Finish</button>
+                <div *ngIf="loading" class="finish">
+                    <mat-spinner diameter="40"></mat-spinner>
+                    <p>Creating Your Degree Plan...</p>
+                </div>
+            </div>
+        </mat-step>
+    </mat-vertical-stepper>
+</mat-dialog-content>

@@ -1,0 +1,81 @@
+@import "~src/vars.scss";
+$shadow: 0px 10px 8px rgba(0, 0, 0, 0.2);
+
+.mat-toolbar {
+	// background-color: map-get($md-primary, 400);
+	min-height: 80px;
+	display: flex;
+	justify-content: space-between;
+	box-shadow: $shadow;
+	margin-bottom: 25px;
+}
+
+.left {
+	:last-child { padding-left: 5px; font-size: 32px; }
+	img { max-width: 500px; min-width: 200px; }
+}
+
+main {
+	margin: 0 auto;
+	max-width: 95%;
+}
+
+.buttons {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 25px;
+}
+
+.loading-bar {
+	text-align: center;
+}
+
+.mat-toolbar section {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.profile-picture {
+	border: 3px solid white;
+	border-radius: 50px;
+	max-height: 60px;
+	margin-left: 20px;
+}
+
+mat-expansion-panel-header {
+	min-height: 80px;
+	.mat-expansion-panel-header-title {
+		display: flex;
+		flex-direction: column;
+	}
+}
+
+.plan-panel {
+	margin-bottom: 25px;
+}
+
+.wrapper {
+	background-color: #EEEEEE;
+	height: 100vh;
+}
+
+.none {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	h2 { font-weight: normal; color: #444; }
+	p { color: #888; }
+	flex-direction: column;
+}
+
+.delete {
+	max-height: 50px;
+	margin: 10px 30px 0 0;
+}
+
+.flex-col {
+	flex-direction: column;
+	justify-content: space-around;
+}

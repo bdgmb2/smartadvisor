@@ -1,0 +1,21 @@
+<mat-dialog-content>
+    <div class="flex loading" *ngIf="loading">
+        <p>Getting your courses from your uploaded DARS audit...</p>
+        <mat-progress-spinner diameter="50" mode="indeterminate"></mat-progress-spinner>
+    </div>
+    <article class="flex" *ngIf="audit === undefined && !loading">
+        <h2>Upload Your DARS Audit</h2>
+        <p>SmartAdvisor can track what classes and courses you've completed and give you a better, faster path to graduation.</p>
+        <p>To get started, go to <a href="https://mydegree.mst.edu">S&T MyDegree</a> and generate a degree audit for your major. Save the degree audit to your computer,
+        then upload it here.</p>
+        <form>
+            <input type="file">
+        </form>
+    </article>
+    <article *ngIf="audit !== undefined && !loading">
+        <h2>Your Completed Classes:</h2>
+        <form>
+            <input type="file">
+        </form>
+    </article>
+</mat-dialog-content>

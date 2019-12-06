@@ -1,0 +1,23 @@
+<mat-dialog-content>
+    <h2>Select {{ elective.name }} Elective</h2>
+    <p class="nobottom"><b>{{ elective.possibleCourses.length }}</b> potential courses can fill this elective position.</p>
+    <p class="notop"><b>0</b> of these courses will have prerequisites met at this semester in the degree plan.</p>
+    <mat-chip-list>
+        <mat-chip color="warn" selected><p>No possible courses can be taken to satisfy this elective at this point in the semester.</p></mat-chip>
+    </mat-chip-list>
+    <p>Satisfy this elective requirement by selecting one of the courses below:</p>
+    <section class="cards" *ngFor="let course of elective.possibleCourses">
+        <mat-card>
+            <div class="flex nomargin">
+                <div class="nomargin">
+                    <mat-card-title><p class="nomargin"><b>{{ course.id }}</b></p></mat-card-title>
+                    <mat-card-subtitle><p class="nomargin">{{ course.name }}</p></mat-card-subtitle>
+                </div>
+                <div class="nomargin">
+                    <button mat-button (click)="selectCourse(course)">Select</button>
+                    <button mat-button (click)="showCourseDetails(course)">Details</button>
+                </div>
+            </div>
+        </mat-card>
+    </section>
+</mat-dialog-content>

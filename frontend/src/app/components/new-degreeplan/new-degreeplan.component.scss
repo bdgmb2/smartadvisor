@@ -1,0 +1,36 @@
+.mat-button-wrapper {
+    font-weight: bold;
+}
+
+.radio {
+    display: flex;
+    flex-direction: row;
+}
+.radio :not(:first-child) {
+    margin-left: 20px;
+}
+  
+::ng-deep .mat-form-field {
+    width: 60%;
+}
+mat-slider {
+    margin-left: 20px;
+    min-width: 200px;
+}
+
+button {
+    margin-top: 25px;
+}
+
+.finish {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+.finish :last-child {
+    margin-left: 15px;
+}
+
+.slider {
+    margin-top: 20px;
+}

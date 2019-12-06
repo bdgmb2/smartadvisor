@@ -1,0 +1,24 @@
+<div class="background">
+    <article>
+        <header class="header-box">
+            <div class="header-row">
+                <img src="assets/stlogo.svg" alt="Missouri S&T">
+            </div>
+            <div class="header-row">
+                <h1>SmartAdvisor</h1>
+            </div>
+        </header>
+        <div class="main-box container-fluid">
+            <h2>Welcome!</h2>
+            <a [href]="googleSignInURL" class="login" mat-raised-button color="accent">Sign In Using Google</a>
+            <mat-chip-list *ngIf="err !== undefined">
+                <mat-chip color="warn" selected><p>{{ err }}</p></mat-chip>
+            </mat-chip-list>
+            <p>
+                The Advising SmartAssistant is a tool designed for S&T students to use in conjunction with their advisors to help them
+                plan their upcoming semesters. Using this tool implies you agree to our <a href="" class="term_policy">Terms of Use</a> and <a href="" class="term_policy">Privacy Policy</a>.
+                <br />&copy;2019, The Curators of the University of Missouri. All Rights Reserved.
+            </p>
+        </div>
+    </article>
+</div>

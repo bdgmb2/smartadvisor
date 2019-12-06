@@ -1,0 +1,22 @@
+# Install required tools
+FROM node:12.2.0 AS tools
+ENV PATH /app/node_modules/.bin:$PATH
+RUN yarn global add @angular/cli@7.3.9
+
+# Install dependencies
+FROM tools AS dependencies
+WORKDIR /app
+COPY [ "package.json", "yarn.lock", "./" ]
+RUN yarn install
+
+# Build for production
+FROM dependencies AS build
+WORKDIR /app
+COPY . .
+RUN ng lint
+RUN ng build --configuration=production
+
+# Copy output files
+FROM alpine AS dist
+WORKDIR /frontend
+COPY --from=build /app/dist/advisingsa .

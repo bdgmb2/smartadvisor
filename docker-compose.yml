@@ -1,0 +1,26 @@
+version: '3.3'
+services:
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "80:80"
+    hostname: frontend
+    volumes:
+      - ./frontend:/src:rw
+  database:
+    image: "neo4j:latest"
+    hostname: database
+    volumes:
+      - /srv/docker/backend/data:/data
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "5000:5000"
+    hostname: backend
+    depends_on:
+      - database
+    volumes:
+      - ./backend-configs:/configs:ro
+      - ./backend:/src:rw

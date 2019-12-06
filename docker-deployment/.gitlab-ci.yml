@@ -1,0 +1,35 @@
+deployDev:
+  environment:
+    name: SmartAssistant Development
+    url: https://dev.smartassistant.ga
+  script:
+    - docker login -u sadockerfrontend -p $FRONTEND_KEY git-docker.mst.edu
+    - docker pull git-docker.mst.edu/smartass/advisingsa-frontend:dev-latest
+    - docker login -u sadockerbackend -p $BACKEND_KEY git-docker.mst.edu
+    - docker pull git-docker.mst.edu/smartass/advisingsa-backend:dev-latest
+    - docker-compose build
+    - cp "$BACKEND_DEV_CONFIG" ./backend-configs
+    - sudo docker-compose -f docker-compose-beta.yml down -v
+    - sudo docker-compose -f docker-compose-beta.yml up -d
+  only:
+    - dev
+  tags:
+    - dev
+    
+deployProd:
+  environment:
+    name: SmartAssistant Production
+    url: https://smartassistant.ga
+  script:
+    - docker login -u sadockerfrontend -p $FRONTEND_KEY git-docker.mst.edu
+    - docker pull git-docker.mst.edu/smartass/advisingsa-frontend:prod-latest
+    - docker login -u sadockerbackend -p $BACKEND_KEY git-docker.mst.edu
+    - docker pull git-docker.mst.edu/smartass/advisingsa-backend:prod-latest
+    - docker-compose build
+    - cp "$BACKEND_PROD_CONFIG" ./backend-configs
+    - sudo docker-compose down -v
+    - sudo docker-compose up -d
+  only:
+    - master
+  tags:
+    - prod

@@ -1,0 +1,10 @@
+@import '~@angular/material/theming';
+@import 'vars.scss';
+@include mat-core();
+
+$primary: mat-palette($md-primary);
+$secondary: mat-palette($md-secondary);
+$warn: mat-palette($md-warn);
+$light-theme: mat-light-theme($primary, $secondary, $warn);
+
+@include angular-material-theme($light-theme);

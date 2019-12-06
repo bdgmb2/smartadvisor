@@ -1,0 +1,67 @@
+image: tmaier/docker-compose:latest
+
+before_script:
+  - whoami
+  - pwd
+  
+stages:
+  - build
+  - deploy
+  - test
+
+ci:
+  image: node:latest
+  stage: test
+  script:
+    - yarn global add @angular/cli
+    - yarn install
+    - ng lint
+    - ng build --configuration=production
+  only:
+    - merge_requests
+  tags:
+    - ci
+
+build-dev:
+  stage: build
+  only:
+    - dev
+  tags:
+    - ci
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -t $CI_REGISTRY_IMAGE:dev-latest -f Dockerfile.beta .
+    - docker push $CI_REGISTRY_IMAGE:dev-latest
+
+build-prod:
+  stage: build
+  only:
+    - master
+  tags:
+    - ci
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -t $CI_REGISTRY_IMAGE:prod-latest -f Dockerfile.production .
+    - docker push $CI_REGISTRY_IMAGE:prod-latest
+    
+deploy-dev:
+  image: byrnedo/alpine-curl
+  stage: deploy
+  only:
+    - dev
+  tags:
+    - ci
+  script:
+    - curl -X POST -F token=e11537e16c6cb28502e949558f913c -F ref=dev https://git.mst.edu/api/v4/projects/4607/trigger/pipeline
+  when: manual
+
+deploy-prod:
+  image: byrnedo/alpine-curl
+  stage: deploy
+  only:
+    - master
+  tags:
+    - ci
+  script:
+    - curl -X POST -F token=e11537e16c6cb28502e949558f913c -F ref=master https://git.mst.edu/api/v4/projects/4607/trigger/pipeline
+  when: manual

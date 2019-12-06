@@ -1,0 +1,21 @@
+<mat-dialog-content>
+    <section class="title">
+        <h2>{{ course.id }}</h2>
+        <h4>{{ course.name }}</h4>
+    </section>
+    <p class="nobottom">Offered by the <b>{{ course.department }}</b> department</p>
+    <p class="notop"><b>{{ course.credits }}</b> credit hour{{ (course.credits > 1 ? 's' : '') }}</p>
+    <p>{{ course.description }}</p>
+    <section *ngIf="course.corequisites.length > 0">
+        <p><b>Must be taken in conjunction with:</b></p>
+        <ul *ngFor="let coreq of course.corequisites">
+            <li><span class="link" (click)="lookupCourse(coreq.class)">{{ coreq.description }}</span></li>
+        </ul>
+    </section>
+    <section *ngIf="course.prerequisites.length > 0">
+        <p><b>Prerequisites:</b></p>
+        <ul *ngFor="let prereq of course.prerequisites">
+            <li><span class="link" (click)="lookupCourse(prereq.class)">{{ prereq.description }}</span></li>
+        </ul>
+    </section>
+</mat-dialog-content>
